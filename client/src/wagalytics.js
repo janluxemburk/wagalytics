@@ -90,6 +90,11 @@ class Dashboard {
      * @param {int} range - use the `ranges` enum to select. (Can be 1 or 2)
      */
     refresh() {
+        let start = new Date($(this.start_date_input).val())
+        let end = new Date($(this.end_date_input).val())
+        if (isNaN(start) || isNaN(end) || start > end) {
+            return
+        }
         this.sessionsLineChart();
         this.popularPagesTable();
         this.topReferrersTable();
@@ -121,6 +126,7 @@ class Dashboard {
                 dimensions: 'ga:date,ga:nthDay',
                 metrics: 'ga:sessions'
             }).then(results => {
+                if (!results.rows) return
                 this.data['sessions'] = results.rows;
                 $(this.export_btn).prop('disabled', false);
                 $(this.export_btn).removeClass('button-longrunning-active');
@@ -184,6 +190,10 @@ class Dashboard {
             // e.g. if someone visit http://mywebsite.com vs http://www.mywebsite.com
             // Here we aggregate these results into single values per page, regardless
             // of hostname
+            if (!results.rows) {
+                document.getElementById(id).innerHTML = ''
+                return
+            }
             var i = 0;
             const rows = results.rows;
             const l = rows.length;
@@ -225,6 +235,10 @@ class Dashboard {
         };
 
         this.getQuery(queryData).then(results => {
+            if (!results.rows) {
+                document.getElementById(id).innerHTML = ''
+                return
+            }
             this.data['referrers'] = results.rows;
             $(this.export_btn).prop('disabled', false);
             $(this.export_btn).removeClass('button-longrunning-active');

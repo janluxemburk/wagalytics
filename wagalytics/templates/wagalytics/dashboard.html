@@ -53,6 +53,11 @@
         float: none;
         text-align: left;
       }
+
+      .admin_date_input input[type=date]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        display: none;
+     }
     </style>
 {% endblock %}
 
@@ -75,7 +80,7 @@
                             <label for="id_date_from">Start date:</label>
                             <div class="field-content">
                                 <div class="input">
-                                    <input id="id_date_from" type="date" value="{{ initial_start_date }}">
+                                    <input id="id_date_from" type="date" value="{{ initial_start_date }}" required="required">
                                 </div>
                             </div>
                         </div>
@@ -85,7 +90,7 @@
                             <label for="id_date_from">End date:</label>
                             <div class="field-content">
                                 <div class="input">
-                                    <input id="id_date_to" type="date" value="{% now "Y-m-d" %}">
+                                    <input id="id_date_to" type="date" value="{% now "Y-m-d" %}" required="required">
                                 </div>
                             </div>
                         </div>
